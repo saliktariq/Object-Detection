@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import pytesseract
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 import json
 import argparse
 import os
@@ -8,7 +9,7 @@ import sys
 from pathlib import Path
 
 # Configuration
-TARGET_KEYWORDS = ["dr", "healthcare", "health", "@dr"]
+TARGET_KEYWORDS = ["stoic", "wisdom", "quotes", "stoicwisdomquotes", "stoic wisdom quotes", "stoic wisdom",]
 MIN_CONF = 30
 MIN_TEXT_LEN = 2
 MERGE_DISTANCE = 60
