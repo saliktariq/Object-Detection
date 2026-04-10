@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 
 # Configuration
-TARGET_KEYWORDS = ["stoic", "wisdom", "quotes", "stoicwisdomquotes", "stoic wisdom quotes", "stoic wisdom",]
+TARGET_KEYWORDS = ["stoic", "wisdom", "quotes"]
 MIN_CONF = 30
 MIN_TEXT_LEN = 2
 MERGE_DISTANCE = 60
@@ -187,7 +187,7 @@ def process_video(video_path: str, interval_sec: float, fast_mode: bool) -> dict
     return {"file": video_path, "video_size": [width, height], "watermarks": all_watermarks}
 
 # Batch processing
-def process_directory(folder: str, interval_sec: float, fast_mode: bool) -> dict:
+def process_directory(folder: str, interval_sec: float, fast_mode: bool, output_file: str) -> dict:
     results = {}
     files = [f for f in Path(folder).iterdir() if f.suffix.lower() in VIDEO_EXTENSIONS]
     
@@ -199,6 +199,10 @@ def process_directory(folder: str, interval_sec: float, fast_mode: bool) -> dict
         n = len(watermarks)
         print(f"{n} watermark(s) found")
         results[f.name] = watermarks
+        
+        # Write results after each video to preserve progress
+        with open(output_file, "w") as f_out:
+            json.dump(results, f_out, indent=2)
         
     return results
 
@@ -215,11 +219,8 @@ def main():
         print(f"Error: '{inp}' is not a valid directory.")
         sys.exit(1)
 
-    all_results = process_directory(inp, args.interval, args.fast)
-
-    with open(args.output, "w") as f:
-        json.dump(all_results, f, indent=2)
-    print(f"\nResults saved to {args.output}")
+    all_results = process_directory(inp, args.interval, args.fast, args.output)
+    print(f"\nAll processing complete. Final results saved to {args.output}")
 
 if __name__ == "__main__":
     main()
