@@ -115,7 +115,7 @@ def main():
     args = parser.parse_args()
 
     # Hardcoded values
-    image_directory = r"C:\Users\salik\Desktop\Object-Detection\sample_images"  # Change this path to your sample images folder
+    image_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sample_images")  # Change this path to your sample images folder
     threshold = 0.8  # Adjust similarity threshold (0.0-1.0)
 
     if not os.path.isdir(args.video_directory):
